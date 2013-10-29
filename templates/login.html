@@ -1,0 +1,18 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <h2>
+            Please enter your email and password to review a movie!
+        </h2>
+        <div>
+            <form>
+                Email: <input type="text" name="email"><br>
+                Password: <input type="text" name="password"><br>
+                <input type="submit" value="Login">
+            </form>
+        </div>
+        <div>
+            <a href="{{ url_for("signup") }}">Not a user? Register here!</a>
+    </body>
+</html>

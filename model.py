@@ -8,10 +8,10 @@ from sqlalchemy.orm import relationship, backref
 
 
 ENGINE = create_engine("sqlite:///ratings.db", echo=False)
-session = scoped_session(sessionmaker(bind=ENGINE,
+db_session = scoped_session(sessionmaker(bind=ENGINE,
  autocommit=False, autoflush=False))
 Base = declarative_base()
-Base.query = session.query_property()
+Base.query = db_session.query_property()
 
 
 
@@ -50,7 +50,7 @@ class Rating(Base):
 #     global Session
 
 #     ENGINE = create_engine("sqlite:///ratings.db", echo=False)
-#     Session = scoped_session(sessionmaker(bind=ENGINE,
+#     Session = scoped_db_session(sessionmaker(bind=ENGINE,
 #      autocommit=False, autoflush=False))
 #     Base = declarative_base()
 #     Base.query = s.query_property()
@@ -58,6 +58,12 @@ class Rating(Base):
 #     # Base.metadata.create_all(ENGINE)
 
 #     return Session()
+
+def create_user(email, password, age, zipcode):
+    new_user = User(age=age, email=email, password=password, zipcode=zipcode)
+    db_session.add(new_user)
+    db_session.commit()
+    return
 
 def main():
     """In case we need this for something"""
