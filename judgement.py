@@ -10,7 +10,8 @@ app.secret_key = "hollaforadolla"
 def index():
     # check to see if user is already logged in
     if session.get("email"):
-        return render_template("homepage.html")
+
+        return "hi"# render_template("homepage.html")
     else:
         return render_template("index.html")
         
@@ -23,11 +24,14 @@ def index():
 @app.route("/login", methods=["POST"])
 def login():
     email = request.form.get("email")
-    password = request.form.get("password")
+    password = hash(request.form.get("password"))
 
-    print email, password
- 
-    return render_template("login.html")
+    if model.verify_user(email, password):
+        session["email"] = email
+        return redirect(url_for("index"))
+    else:
+        return redirect(url_for("login"))
+
 
 @app.route("/signup")
 def signup():
@@ -35,6 +39,16 @@ def signup():
         return redirect(url_for("index"))
     else:
         return render_template("signup.html")
+
+@app.route("/user_ratings")
+def show_ratings():
+    render_template("/user_ratings")
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("index"))
 
 
 @app.route("/signup", methods=["POST"])
@@ -48,6 +62,11 @@ def register():
     session["email"] = email
     # keep user logged in by storing it in the session
     return redirect(url_for("index"))
+
+@app.route("/homepage", methods=["GET"])
+def show_users():
+    user_list = model.get_users()
+    return render_template("homepage.html", users=user_list)
 
 if __name__ == "__main__":
     app.run(debug=True)

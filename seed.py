@@ -21,7 +21,7 @@ def load_movies(db_session):
                 movie_date = datetime.datetime.strptime(movie[2], "%d-%b-%Y")
             
             new_movie = model.Movie(id=movie[0], name=movie[1], 
-                released_at=movie_date, imdb_url=movie[3])
+                released_at=movie_date, imdb_url=movie[4])
 
             # remove the release date from the name of movie
             new_movie.name = new_movie.name[0:-7].decode("latin-1")
@@ -46,5 +46,5 @@ def main(db_session):
     db_session.commit()
 
 if __name__ == "__main__":
-    s= model.connect()
+    s = model.connect()
     main(s)

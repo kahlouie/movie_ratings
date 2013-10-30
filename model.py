@@ -44,26 +44,41 @@ class Rating(Base):
     user = relationship("User", backref=backref("ratings", order_by=id))
     movie = relationship("Movie", backref=backref("ratings", order_by=id))
 
-### End class declarations
+####################### THIS IS IMPORTANT #########################
+# ### End class declarations
 # def connect():
 #     global ENGINE
 #     global Session
 
-#     ENGINE = create_engine("sqlite:///ratings.db", echo=False)
-#     Session = scoped_db_session(sessionmaker(bind=ENGINE,
-#      autocommit=False, autoflush=False))
+#     # ENGINE = create_engine("sqlite:///ratings.db", echo=True)
+#     Session = scoped_session(sessionmaker(bind=ENGINE, autocommit=False, autoflush=False))
 #     Base = declarative_base()
-#     Base.query = s.query_property()
+#     Base.query = Session.query_property()
 #     # if you are remaking the dbs, uncomment the following!
 #     # Base.metadata.create_all(ENGINE)
 
 #     return Session()
+###################################################################
+
 
 def create_user(email, password, age, zipcode):
-    new_user = User(age=age, email=email, password=password, zipcode=zipcode)
+    new_user = User(age=age, email=email, password=hash(password), zipcode=zipcode)
     db_session.add(new_user)
     db_session.commit()
     return
+
+
+def verify_user(email, password):
+    potential_user = db_session.query(User).filter(User.email == email, User.password == password)
+
+    if potential_user: 
+        return True
+    else:
+        return False
+
+def get_users():
+    user_list = db_session.query(User).limit(10).all()
+    return user_list
 
 def main():
     """In case we need this for something"""

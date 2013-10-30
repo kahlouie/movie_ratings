@@ -1,18 +1,17 @@
-<html>
-    <head>
-    </head>
-    <body>
-        <h2>
-            Please enter your email and password to review a movie!
-        </h2>
+{% extends 'master.html' %}
+    {% block body %}
+        
         <div>
-            <form>
-                Email: <input type="text" name="email"><br>
-                Password: <input type="text" name="password"><br>
-                <input type="submit" value="Login">
+            <form class="signin" action="/login" method="POST">
+                <h2 class="signin-heading">
+                Enter your email and password to review a movie!
+                </h2>
+                Email: <input type="text" name="email" class="form-control"><br>
+                Password: <input type="text" name="password" class="form-control"><br>
+                <input type="submit" class="btn btn-lg btn-primary btn-block" value="Login">
             </form>
         </div>
         <div>
-            <a href="{{ url_for("signup") }}">Not a user? Register here!</a>
-    </body>
-</html>
+            Not a user? Register <a href="{{ url_for("signup") }}">here</a>!
+
+    {% endblock %}
