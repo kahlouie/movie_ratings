@@ -4,7 +4,7 @@
             <h1>Welcome to Make the Cut</h1>
             <p>
                 {% for user in users %}
-                User <a href="{{url_for("show_ratings", id=user.id, ratings=user.ratings)}}">{{ user.id }}</a>, age {{ user.age }} has {{ user.ratings|length }} ratings<br>
+                <a href="/show_ratings/{{user.id}}">User {{ user.id }}</a>, age {{ user.age }}, has {{ user.ratings|length }} ratings<br>
                 {% endfor %}
             </p>
         </div>

@@ -1,0 +1,47 @@
+{% extends 'master.html' %}
+    {% block body %}
+        <h1><a href="{{movie.imdb_url}}">{{movie.name}}</a></h1>
+        {% if email %}
+        <div>
+            <br>
+            <form method="POST" action="/movie/{{movie.id}}">
+                <h4>How would you like to rate this movie?</h4>
+                <!-- TODO: MAKE BUTTONS SHOWING MOVIE RATING OPTIONS -->
+                <!-- <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-primary">
+                        <input type="radio" name="rating" value="1"> {{"\u2605"}}
+                    </label>
+                    <label class="btn btn-primary">
+                        <input type="radio" name="rating" value="2"> {{2*"\u2605"}}
+                    </label>
+                    <label class="btn btn-primary">
+                        <input type="radio" name="rating" value="3"> {{3*"\u2605"}}
+                    </label>
+                    <label class="btn btn-primary">
+                        <input type="radio" name="rating" value="4"> {{4*"\u2605"}}
+                    </label>
+                    <label class="btn btn-primary">
+                        <input type="radio" name="rating" value="5"> {{5*"\u2605"}}
+                    </label>
+                </div> -->
+                Rating: <select name="ratings">
+                <option value="1">{{"\u2605"}}</option>
+                <option value="2">{{2*"\u2605"}}</option>
+                <option value="3">{{3*"\u2605"}}</option>
+                <option value="4">{{4*"\u2605"}}</option>
+                <option value="5">{{5*"\u2605"}}</option>
+                </select>
+                <input type="submit" value="Rate this movie!">
+            </form>
+            <br>
+        </div>
+        {% endif %}
+        <div>
+            <h4>There are <blink>{{ratings|length}}</blink> ratings for this movie:</h4>
+            <p>
+                {% for rating in ratings %}
+                    <a href="/show_ratings/{{rating.user.id}}">User {{rating.user.id}}</a>: {{rating.rating*"\u2605"}}<br>
+                {% endfor %}
+            </p>
+        </div>
+    {% endblock %}

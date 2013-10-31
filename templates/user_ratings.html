@@ -1,10 +1,10 @@
 {% extends 'master.html' %}
     {% block body %}
-        <h1>User {{id}}'s {{ ratings|length }} movie ratings:</h1>
+        <h1>User {{id}}'s {{ count_of_ratings }} movie ratings:</h1>
         <div>
             <p>
                 {% for rating in ratings %}
-                    {{rating.movie.name}}<br>
+                    <a href="/movie/{{rating.movie.id}}">{{rating.movie.name}}</a>:    {{rating.rating*"\u2605"}}<br>
                 {% endfor %}
             </p>
         </div>

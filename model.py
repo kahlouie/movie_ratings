@@ -76,9 +76,37 @@ def verify_user(email, password):
     else:
         return False
 
+def get_movie(movie_id):
+    movie = db_session.query(Movie).filter(Movie.id == movie_id).one()
+    return movie
+
+def get_ratings_by_movie_id(movie_id):
+    ratings = db_session.query(Rating).filter(Rating.movie_id == movie_id).all()
+    return ratings
+
+def get_ratings_by_id(id):
+    ratings = db_session.query(Rating).filter(Rating.user_id == id)
+    return ratings
+
+def get_user_id_by_email(email):
+    user = db_session.query(User).filter(User.email == email).first()
+    return user
+
 def get_users():
-    user_list = db_session.query(User).limit(10).all()
+    # THIS LIMITS THE NUMBER OF USERS WE CAN ACCESS
+    user_list = db_session.query(User).limit(100).all()
+
+    # ACCESS ALL USERS 
+    # user_list = db_session.query(User).all()
     return user_list
+
+def add_movie_rating(user_id, movie_id, rating):
+    new_rating = Rating(user_id=user_id, movie_id=movie_id, rating=rating)
+    db_session.add(new_rating)
+    db_session.commit()
+    db_session.refresh(new_rating)
+    return
+
 
 def main():
     """In case we need this for something"""
