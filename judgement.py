@@ -65,19 +65,38 @@ def show_ratings(user_id):
 @app.route("/movie/<movie_id>")
 def show_movie(movie_id):
     cur_movie = model.get_movie(movie_id)
-    ratings = model.get_ratings_by_movie_id(movie_id)
+    ratings = cur_movie.ratings
+
+    rating_nums = []
+    user_rating = None
+    user = model.get_user_by_email(session["email"])
+    
+    for r in ratings:
+        if r.user_id == user.id:
+            user_rating = r
+        rating_nums.append(r.rating)
+    avg_rating = float(sum(rating_nums))/len(rating_nums)
+
+    # Prediction code: only predict if the user hasn't rated it.
+
+    prediction = None
+    if not user_rating:
+        prediction = user.predict_rating(cur_movie)
+    # End prediction
+
 
     if session.get("email"):
         email = True
     else:
         email = False
-
-    return render_template("movie.html", movie=cur_movie, ratings=ratings, email=email)
+    # return render_template("movie.html", movie=cur_movie, ratings=ratings,email=email)
+    return render_template("movie.html", movie=cur_movie, ratings=ratings,
+     avg_rating=avg_rating, email=email, prediction=prediction)
 
 @app.route("/movie/<movie_id>", methods=["POST"])
 def review_movie(movie_id):
     print "#"*80 
-    user = model.get_user_id_by_email(session.get("email"))
+    user = model.get_user_by_email(session.get("email"))
     print user
     print "#"*80
     user_id = user.id

@@ -3,6 +3,10 @@
         <h1><a href="{{movie.imdb_url}}">{{movie.name}}</a></h1>
         {% if email %}
         <div>
+            <!-- {% if prediction %} -->
+            <p>{{prediction}}</p>
+            <p>The average rating is {{avg_rating}}</p>
+<!--             {% endif %} -->
             <br>
             <form method="POST" action="/movie/{{movie.id}}">
                 <h4>How would you like to rate this movie?</h4>
